@@ -1,6 +1,13 @@
 # 🏋️ MAXXGYM
 
 A modern gym management web application built for trainers and clients to manage workouts digitally.
+<p>
+  
+<a href="https://maxxgymapp.web.app/">
+<img src="https://img.shields.io/badge/Live-Demo-yellow?style=for-the-badge&logo=firebase&logoColor=black"/>
+</a>
+
+</p>
 
 ---
 
