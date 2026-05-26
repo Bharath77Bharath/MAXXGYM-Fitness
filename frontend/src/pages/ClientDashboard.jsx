@@ -27,13 +27,13 @@ const MuscleGroupSection = ({ title, exercises }) => {
     <div className="mb-6">
       <button 
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full flex items-center justify-between bg-[#FFD000] text-[#0B0B0B] px-4 py-3 rounded-lg font-bold uppercase tracking-wider mb-3 shadow-lg"
+        className="w-full flex items-center justify-between bg-[#FFD000] text-[#0B0B0B] px-4 py-3 rounded-lg font-bold uppercase tracking-wider mb-3 shadow-lg text-sm md:text-base"
       >
-        <div className="flex items-center gap-2">
-          <Dumbbell size={18} />
-          <span>{title}</span>
+        <div className="flex items-center gap-2 truncate">
+          <Dumbbell size={18} className="shrink-0" />
+          <span className="truncate">{title}</span>
         </div>
-        {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+        {isExpanded ? <ChevronUp size={20} className="shrink-0" /> : <ChevronDown size={20} className="shrink-0" />}
       </button>
 
       {isExpanded && (
@@ -42,13 +42,13 @@ const MuscleGroupSection = ({ title, exercises }) => {
             <div key={ex.id || i} className="bg-[#141414] rounded-xl p-5 border border-[#2A2A2A] hover:border-[#FFD000]/30 transition-all">
               <h4 className="text-[#F5F5F5] font-bold text-lg mb-3">{ex.name}</h4>
               <div className="flex items-center gap-4 text-sm">
-                <div className="bg-[#1E1E1E] px-4 py-2 rounded-lg border border-[#2A2A2A] flex-1 text-center">
+                <div className="bg-[#1E1E1E] px-2 md:px-4 py-2 rounded-lg border border-[#2A2A2A] flex-1 text-center">
                   <span className="text-[#FFD000] font-display text-lg mr-1">{ex.sets}</span>
-                  <span className="text-[#888888] text-[10px] uppercase font-bold tracking-widest">Sets</span>
+                  <span className="text-[#888888] text-[8px] md:text-[10px] uppercase font-bold tracking-widest">Sets</span>
                 </div>
-                <div className="bg-[#1E1E1E] px-4 py-2 rounded-lg border border-[#2A2A2A] flex-1 text-center">
+                <div className="bg-[#1E1E1E] px-2 md:px-4 py-2 rounded-lg border border-[#2A2A2A] flex-1 text-center">
                   <span className="text-[#FFD000] font-display text-lg mr-1">{ex.reps}</span>
-                  <span className="text-[#888888] text-[10px] uppercase font-bold tracking-widest">Reps</span>
+                  <span className="text-[#888888] text-[8px] md:text-[10px] uppercase font-bold tracking-widest">Reps</span>
                 </div>
               </div>
               {ex.notes && (
@@ -143,7 +143,7 @@ const ClientDashboard = () => {
           {/* Greeting */}
           <header className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
-              <h1 className="text-4xl font-display text-[#F5F5F5] mb-2">
+              <h1 className="text-2xl md:text-4xl font-display text-[#F5F5F5] mb-2">
                 {activeTab === 'profile' ? 'Your Profile' : `Hey, ${userData?.displayName?.split(' ')[0] || 'Athlete'} 💪`}
               </h1>
               <p className="text-[#888888]">
@@ -154,21 +154,21 @@ const ClientDashboard = () => {
             <div className="flex gap-2">
               <button 
                 onClick={() => setActiveTab(activeTab === 'workout' ? 'profile' : 'workout')}
-                className={`px-6 py-3 rounded-2xl flex items-center gap-2 font-bold uppercase tracking-widest text-xs transition-all border ${
+                className={`px-4 md:px-6 py-2.5 md:py-3 rounded-2xl flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-[10px] md:text-xs transition-all border flex-1 md:flex-none ${
                   activeTab === 'profile' 
                     ? 'bg-[#FFD000] border-[#FFD000] text-[#0B0B0B]' 
                     : 'bg-[#141414] border-[#2A2A2A] text-[#F5F5F5] hover:border-[#FFD000]'
                 }`}
               >
-                {activeTab === 'profile' ? <Dumbbell size={18} /> : <User size={18} />}
+                {activeTab === 'profile' ? <Dumbbell size={16} /> : <User size={16} />}
                 {activeTab === 'profile' ? 'My Workout' : 'My Profile'}
               </button>
 
               <button 
                 onClick={() => navigate('/client/log')}
-                className="bg-[#141414] border border-[#2A2A2A] hover:border-[#FFD000] text-[#F5F5F5] hover:text-[#FFD000] px-6 py-3 rounded-2xl flex items-center gap-2 font-bold uppercase tracking-widest text-xs transition-all"
+                className="bg-[#141414] border border-[#2A2A2A] hover:border-[#FFD000] text-[#F5F5F5] hover:text-[#FFD000] px-4 md:px-6 py-2.5 md:py-3 rounded-2xl flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-[10px] md:text-xs transition-all flex-1 md:flex-none"
               >
-                <History size={18} />
+                <History size={16} />
                 Sign-off Log
               </button>
             </div>

@@ -1,7 +1,14 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Dumbbell } from 'lucide-react';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  signOut,
+  setPersistence,
+  browserLocalPersistence,
+  browserSessionPersistence
+} from 'firebase/auth';
 import { doc, setDoc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import { auth, db } from '../firebase';
 import { useAuth } from '../contexts/AuthContext';
@@ -14,6 +21,7 @@ const ClientAuth = () => {
   const [name, setName] = useState('');
   const [trainerCode, setTrainerCode] = useState('');
   const [loading, setLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
   const navigate = useNavigate();
   const { currentUser, userRole, loading: authLoading, refreshUser, signInWithGoogle } = useAuth();
 
@@ -27,6 +35,7 @@ const ClientAuth = () => {
   const handleGoogleSignIn = async () => {
     setLoading(true);
     try {
+      await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
       const user = await signInWithGoogle();
       const userDoc = await getDoc(doc(db, 'users', user.uid));
       
@@ -53,7 +62,7 @@ const ClientAuth = () => {
         navigate('/client/dashboard', { replace: true });
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(getFriendlyErrorMessage(error));
     } finally {
       setLoading(false);
     }
@@ -65,6 +74,7 @@ const ClientAuth = () => {
 
     try {
       if (isLogin) {
+        await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
         const userDoc = await getDoc(doc(db, 'users', user.uid));
@@ -128,9 +138,28 @@ const ClientAuth = () => {
         setTrainerCode('');
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(getFriendlyErrorMessage(error));
     } finally {
       setLoading(false);
+    }
+  };
+
+  const getFriendlyErrorMessage = (error) => {
+    switch (error.code) {
+      case 'auth/invalid-credential':
+        return 'Invalid email or password. Please try again.';
+      case 'auth/user-not-found':
+        return 'No account found with this email.';
+      case 'auth/wrong-password':
+        return 'Incorrect password.';
+      case 'auth/email-already-in-use':
+        return 'This email is already in use.';
+      case 'auth/weak-password':
+        return 'Password should be at least 6 characters.';
+      case 'auth/network-request-failed':
+        return 'Network error. Please check your connection.';
+      default:
+        return 'Authentication failed. Please try again.';
     }
   };
 
@@ -185,18 +214,36 @@ const ClientAuth = () => {
             )}
             <div>
               <label className="block text-sm text-[#888888] mb-1">Email</label>
-              <input type="email" required value={email}
+              <input type="email" name="email" required value={email}
+                autoComplete="email"
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full bg-[#1E1E1E] border border-[#2A2A2A] rounded p-3 text-[#F5F5F5] focus:outline-none focus:border-[#FFD000] transition-colors"
                 placeholder="client@example.com" />
             </div>
             <div>
               <label className="block text-sm text-[#888888] mb-1">Password</label>
-              <input type="password" required value={password}
+              <input type="password" name="password" required value={password}
+                autoComplete={isLogin ? "current-password" : "new-password"}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full bg-[#1E1E1E] border border-[#2A2A2A] rounded p-3 text-[#F5F5F5] focus:outline-none focus:border-[#FFD000] transition-colors"
                 placeholder="••••••••" />
             </div>
+
+            {isLogin && (
+              <div className="flex items-center">
+                <input
+                  id="remember-me"
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="w-4 h-4 bg-[#1E1E1E] border-[#2A2A2A] rounded text-[#FFD000] focus:ring-[#FFD000]"
+                />
+                <label htmlFor="remember-me" className="ml-2 text-sm text-[#888888] cursor-pointer hover:text-[#F5F5F5] transition-colors">
+                  Keep me signed in
+                </label>
+              </div>
+            )}
+
             <button type="submit" disabled={loading}
               className="w-full bg-[#FFD000] text-[#0B0B0B] font-bold uppercase tracking-wider py-3 rounded mt-6 hover:bg-[#C9A200] transition-colors disabled:opacity-50">
               {loading ? 'Processing...' : (isLogin ? 'Login' : 'Sign Up')}

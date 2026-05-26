@@ -112,11 +112,11 @@ const TrainerDashboard = () => {
       <main className="flex-1 p-6 lg:p-12 overflow-y-auto">
         <div className="max-w-6xl mx-auto">
           <header className="mb-10">
-            <h1 className="text-4xl font-display text-[#F5F5F5] mb-2">My Clients</h1>
+            <h1 className="text-3xl md:text-5xl font-display text-[#F5F5F5] mb-2">My Clients</h1>
             <p className="text-[#888888]">Manage your clients and their workout plans.</p>
-            <div className="mt-4 p-4 bg-[#1E1E1E] border border-[#2A2A2A] rounded-lg inline-block">
-              <span className="text-[#888888] mr-2">Your Trainer Code:</span>
-              <span className="text-[#FFD000] font-bold select-all">{userData?.trainerId || currentUser?.uid}</span>
+            <div className="mt-6 p-4 bg-[#1E1E1E] border border-[#2A2A2A] rounded-2xl inline-flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-0 w-full sm:w-auto">
+              <span className="text-[#888888] text-xs uppercase font-bold tracking-widest mr-2">Your Trainer Code:</span>
+              <span className="text-[#FFD000] font-bold select-all text-lg">{userData?.trainerId || currentUser?.uid}</span>
             </div>
           </header>
 

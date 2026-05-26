@@ -232,8 +232,8 @@ const ClientHistory = () => {
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="bg-[#1A1A1A] border-b border-[#2A2A2A]">
-                      <th className="px-6 py-4 text-xs font-bold text-[#888888] uppercase tracking-wider">Date</th>
-                      <th className="px-6 py-4 text-xs font-bold text-[#888888] uppercase tracking-wider">Day</th>
+                      <th className="px-6 py-4 text-xs font-bold text-[#888888] uppercase tracking-wider">Date / Day</th>
+                      <th className="hidden sm:table-cell px-6 py-4 text-xs font-bold text-[#888888] uppercase tracking-wider">Day</th>
                       <th className="px-6 py-4 text-xs font-bold text-[#888888] uppercase tracking-wider">Muscle Group</th>
                       <th className="px-6 py-4 text-xs font-bold text-[#888888] uppercase tracking-wider">Status</th>
                       <th className="px-6 py-4 text-xs font-bold text-[#888888] uppercase tracking-wider text-right">Action</th>
@@ -243,12 +243,17 @@ const ClientHistory = () => {
                     {history.map((record, index) => (
                       <tr key={record.id} className="border-b border-[#2A2A2A]/50 hover:bg-[#1E1E1E] transition-colors group">
                         <td className="px-6 py-4">
-                          <div className="flex items-center gap-2 text-[#F5F5F5] font-medium">
-                            <Calendar size={14} className="text-[#888888]" />
-                            {record.date}
+                          <div className="flex flex-col">
+                            <div className="flex items-center gap-2 text-[#F5F5F5] font-medium">
+                              <Calendar size={14} className="text-[#888888]" />
+                              {record.date}
+                            </div>
+                            <span className="text-[10px] text-[#888888] font-bold uppercase tracking-wider mt-1 md:hidden ml-5">
+                              {getDayOfWeek(record.date)}
+                            </span>
                           </div>
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="hidden sm:table-cell px-6 py-4">
                           <span className="text-[#888888]">{getDayOfWeek(record.date)}</span>
                         </td>
                         <td className="px-6 py-4">

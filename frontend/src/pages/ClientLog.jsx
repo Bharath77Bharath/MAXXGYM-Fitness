@@ -149,21 +149,21 @@ const ClientLog = () => {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
             <div>
               <div className="flex items-center gap-3 mb-2">
-                <CalendarDays className="text-[#FFD000]" size={32} />
-                <h1 className="text-4xl font-display text-[#F5F5F5]">Sign-off Log</h1>
+                <CalendarDays className="text-[#FFD000]" size={28} />
+                <h1 className="text-2xl md:text-4xl font-display text-[#F5F5F5]">Sign-off Log</h1>
               </div>
               <p className="text-[#888888]">Record your sessions and track signatures</p>
             </div>
             
             <button
               onClick={() => setShowForm(!showForm)}
-              className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-bold uppercase tracking-wider text-sm transition-all shadow-lg ${
+              className={`flex items-center justify-center gap-2 px-5 py-2.5 md:px-6 md:py-3 rounded-2xl font-bold uppercase tracking-wider text-[10px] md:text-sm transition-all shadow-lg w-full md:w-auto ${
                 showForm 
                   ? 'bg-[#1E1E1E] text-[#888888] border border-[#2A2A2A]' 
                   : 'bg-[#FFD000] text-[#0B0B0B] hover:scale-105 active:scale-95'
               }`}
             >
-              {showForm ? 'Close' : <><Plus size={20} /> New Sign-off Request</>}
+              {showForm ? 'Close' : <><Plus size={18} /> New Sign-off Request</>}
             </button>
           </div>
 
@@ -222,35 +222,35 @@ const ClientLog = () => {
           {/* Stats Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
             <div className="bg-[#141414] border border-[#2A2A2A] p-6 rounded-2xl shadow-xl">
-              <div className="flex items-center gap-3 text-[#888888] mb-2">
-                <Calendar size={18} />
+              <div className="flex items-center gap-3 text-[#888888] mb-4">
+                <Calendar size={16} className="text-[#FFD000]" />
                 <span className="text-[10px] font-bold uppercase tracking-widest">Total Sessions</span>
               </div>
-              <p className="text-3xl font-display text-[#F5F5F5]">{stats.total}</p>
+              <p className="text-4xl font-display text-[#F5F5F5]">{stats.total}</p>
             </div>
             
             <div className="bg-[#141414] border border-[#2A2A2A] p-6 rounded-2xl shadow-xl">
-              <div className="flex items-center gap-3 text-green-500 mb-2">
-                <CheckCircle size={18} />
+              <div className="flex items-center gap-3 text-green-500 mb-4">
+                <CheckCircle size={16} />
                 <span className="text-[10px] font-bold uppercase tracking-widest">Signed Off</span>
               </div>
-              <p className="text-3xl font-display text-green-400">{stats.approved}</p>
+              <p className="text-4xl font-display text-green-400">{stats.approved}</p>
             </div>
 
             <div className="bg-[#141414] border border-[#2A2A2A] p-6 rounded-2xl shadow-xl">
-              <div className="flex items-center gap-3 text-[#FFD000] mb-2">
-                <Clock size={18} />
+              <div className="flex items-center gap-3 text-[#FFD000] mb-4">
+                <Clock size={16} />
                 <span className="text-[10px] font-bold uppercase tracking-widest">Pending</span>
               </div>
-              <p className="text-3xl font-display text-[#FFD000]">{stats.pending}</p>
+              <p className="text-4xl font-display text-[#FFD000]">{stats.pending}</p>
             </div>
 
-            <div className="bg-[#141414] border border-[#2A2A2A] p-6 rounded-2xl shadow-xl">
-              <div className="flex items-center gap-3 text-blue-400 mb-2">
-                <Award size={18} />
+            <div className="bg-[#141414] border border-[#2A2A2A] p-6 rounded-2xl shadow-xl overflow-hidden">
+              <div className="flex items-center gap-3 text-blue-400 mb-4">
+                <Award size={16} />
                 <span className="text-[10px] font-bold uppercase tracking-widest">Most Trained</span>
               </div>
-              <p className="text-3xl font-display text-[#F5F5F5] truncate uppercase">{stats.mostFrequent}</p>
+              <p className="text-4xl font-display text-[#F5F5F5] truncate uppercase leading-tight">{stats.mostFrequent}</p>
             </div>
           </div>
 
@@ -278,23 +278,28 @@ const ClientLog = () => {
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="bg-[#1A1A1A] border-b border-[#2A2A2A]">
-                      <th className="px-8 py-5 text-[10px] font-bold text-[#555555] uppercase tracking-widest">Date</th>
-                      <th className="px-8 py-5 text-[10px] font-bold text-[#555555] uppercase tracking-widest">Day</th>
-                      <th className="px-8 py-5 text-[10px] font-bold text-[#555555] uppercase tracking-widest">Routine</th>
-                      <th className="px-8 py-5 text-[10px] font-bold text-[#555555] uppercase tracking-widest text-right">Signature</th>
+                      <th className="px-4 md:px-8 py-5 text-[10px] font-bold text-[#555555] uppercase tracking-widest">Date / Day</th>
+                      <th className="hidden sm:table-cell px-4 md:px-8 py-5 text-[10px] font-bold text-[#555555] uppercase tracking-widest">Day</th>
+                      <th className="px-4 md:px-8 py-5 text-[10px] font-bold text-[#555555] uppercase tracking-widest text-center md:text-left">Routine</th>
+                      <th className="px-4 md:px-8 py-5 text-[10px] font-bold text-[#555555] uppercase tracking-widest text-right">Signature</th>
                     </tr>
                   </thead>
                   <tbody>
                     {signOffRequests.map((req) => (
                       <tr key={req.id} className="border-b border-[#2A2A2A]/50 hover:bg-[#1E1E1E] transition-colors group">
-                        <td className="px-8 py-6 text-sm font-medium text-[#F5F5F5]">{req.date}</td>
-                        <td className="px-8 py-6 text-sm text-[#888888]">{getDayOfWeek(req.date)}</td>
-                        <td className="px-8 py-6">
-                          <span className="px-4 py-1.5 bg-[#2A2A2A] text-[#FFD000] rounded-xl text-[10px] font-bold uppercase tracking-widest border border-[#FFD000]/10">
+                        <td className="px-4 md:px-8 py-6">
+                          <div className="flex flex-col">
+                            <span className="text-sm font-medium text-[#F5F5F5] whitespace-nowrap">{req.date}</span>
+                            <span className="text-[10px] text-[#888888] font-bold uppercase tracking-wider md:hidden">{getDayOfWeek(req.date)}</span>
+                          </div>
+                        </td>
+                        <td className="hidden sm:table-cell px-4 md:px-8 py-6 text-sm text-[#888888]">{getDayOfWeek(req.date)}</td>
+                        <td className="px-4 md:px-8 py-6 text-center md:text-left">
+                          <span className="px-3 py-1 bg-[#2A2A2A] text-[#FFD000] rounded-xl text-[10px] font-bold uppercase tracking-widest border border-[#FFD000]/10 whitespace-nowrap">
                             {req.muscleGroup}
                           </span>
                         </td>
-                        <td className="px-8 py-6 text-right">
+                        <td className="px-4 md:px-8 py-6 text-right">
                           <div className="inline-flex items-center gap-2">
                             {req.status === 'approved' ? (
                               <div className="flex items-center gap-2 text-green-500">
